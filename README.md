@@ -47,6 +47,8 @@ Exercise_CRUD/
 
 ### 1. Clone the Repository
 
+---
+
 ```bash
 git clone https://github.com/sourav-paul-JKT/Exercise_CRUD.git
 cd Exercise_CRUD
@@ -59,6 +61,7 @@ venv\Scripts\activate     # Windows
 
 ### 2. Create and Activate a Virtual Environment
 
+ ---
 python3 -m venv venv
 source venv/bin/activate  # Linux/macOS
 venv\Scripts\activate     # Windows
