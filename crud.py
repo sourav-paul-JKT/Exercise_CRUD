@@ -39,3 +39,35 @@ def create_book(db: Session, book: schemas.BookCreate):
     db.refresh(db_book)
     return db_book
 
+def delete_book(db: Session, book_id: int):
+    """
+    Delete a book by its ID.
+    Args:
+        db (Session): SQLAlchemy database session.
+        book_id (int): The ID of the book to delete.
+    Returns:
+        models.Book or None: The deleted book object if it existed, else None.
+    """
+    book = db.query(models.Book).filter(models.Book.id == book_id).first()
+    if book:
+        db.delete(book)
+        db.commit()
+    return book
+ 
+def update_book(db: Session, book_id: int, book: schemas.BookCreate):
+    """
+    Update an existing book by its ID.
+    Args:
+        db (Session): SQLAlchemy database session.
+        book_id (int): The ID of the book to update.
+        book (schemas.BookCreate): The updated book data.
+    Returns:
+        models.Book or None: The updated book object if found, else None.
+    """
+    db_book = db.query(models.Book).filter(models.Book.id == book_id).first()
+    if db_book:
+        db_book.title = book.title
+        db_book.author = book.author
+        db.commit()
+        db.refresh(db_book)
+    return db_book

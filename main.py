@@ -65,3 +65,37 @@ def read_book(book_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Book not found")
     return db_book
 
+@app.put("/books/{book_id}", response_model=schemas.Book)
+def update_book(book_id: int, book: schemas.BookCreate, db: Session = Depends(get_db)):
+    """
+    API endpoint to update an existing book by ID.
+    Args:
+        book_id (int): ID of the book to update.
+        book (schemas.BookCreate): Updated book data.
+        db (Session): SQLAlchemy database session.
+    Raises:
+        HTTPException: 404 error if book is not found.
+    Returns:
+        schemas.Book: The updated book.
+    """
+    db_book = crud.update_book(db, book_id=book_id, book=book)
+    if db_book is None:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return db_book
+ 
+@app.delete("/books/{book_id}")
+def delete_book(book_id: int, db: Session = Depends(get_db)):
+    """
+    API endpoint to delete a book by ID.
+    Args:
+        book_id (int): ID of the book to delete.
+        db (Session): SQLAlchemy database session.
+    Raises:
+        HTTPException: 404 error if book is not found.
+    Returns:
+        dict: Success message.
+    """
+    deleted = crud.delete_book(db, book_id)
+    if deleted is None:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return {"message": "Book deleted successfully"}
