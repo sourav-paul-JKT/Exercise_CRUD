@@ -1,8 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from dotenv import load_dotenv
+import os
 
-# SQLite database URL
-DATABASE_URL = "sqlite:///./test.db"
+# Load environment variables from .env file
+load_dotenv()
+
+# Get database URL from environment or fallback to default
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
 # Create SQLAlchemy engine
 engine = create_engine(
@@ -11,7 +16,7 @@ engine = create_engine(
 """
 SQLAlchemy database engine.
 
-Uses SQLite as the database, connecting to './test.db'.
+Uses SQLite as the database, connecting to './test.db' or any path set via .env.
 The 'check_same_thread' argument is set to False to allow connections from different threads,
 which is necessary for SQLite when used with FastAPI.
 """
