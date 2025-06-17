@@ -71,3 +71,4 @@ def update_book(db: Session, book_id: int, book: schemas.BookCreate):
         db.commit()
         db.refresh(db_book)
     return db_book
+    
