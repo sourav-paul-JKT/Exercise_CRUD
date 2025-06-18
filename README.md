@@ -1,34 +1,36 @@
 # Exercise_CRUD
  
-# 📚 FastAPI CRUD Application
+# FastAPI CRUD Application
  
 This is a simple CRUD (Create, Read, Update, Delete) application built using **FastAPI**, **SQLite**, and **SQLAlchemy**. It manages a list of books with attributes like `title` and `author`.
  
 ---
  
-## 🚀 Features
+## Features
  
 - Create a new book entry
 - Read all books or a specific book by ID
 - Update an existing book
 - Delete a book
+- User authentication: Signup and Login (username + password)
 - Interactive API documentation via Swagger UI
 - Dockerized for easy deployment
 - Supports `.env` for configuration
  
 ---
  
-## 🧰 Tech Stack
+## Tech Stack
  
 - **FastAPI** — Web framework
 - **SQLAlchemy** — ORM
 - **SQLite** — Lightweight DB
 - **Pydantic** — Data validation
 - **Docker** — Containerization
+- **Python-dotenv** — Load environment variables
  
 ---
  
-## 📂 Project Structure
+## Project Structure
  
  
 Exercise_CRUD/
@@ -43,6 +45,10 @@ Exercise_CRUD/
 ├── schemas.py # Pydantic schemas
  
 ├── database.py # DB connection setup
+
+├── middleware/
+
+│ └── auth.py # Signup/Login routes & auth logic
  
 ├── requirements.txt # Project dependencies
  
@@ -55,7 +61,7 @@ Exercise_CRUD/
  
 ---
  
-## 🐳 Run the Project Anywhere with Docker
+## Run the Project Anywhere with Docker
  
 >  Prerequisite: Make sure [Docker is installed](https://docs.docker.com/get-docker/)
  
@@ -65,23 +71,38 @@ Exercise_CRUD/
 git clone https://github.com/sourav-paul-JKT/Exercise_CRUD.git
 cd Exercise_CRUD
 ```
- 
-###  Step 2: Build the Docker Image
+### step 2: Create a .env File
+In the root directory of the project, create a .env file with the following content:
+```
+# .env
+
+DATABASE_URL=sqlite:///./test.db
+SECRET_KEY=your_super_secret_key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+```
+
+###  Step 3: Build the Docker Image
  
 ```
 docker build -t fastapi-crud-app .
 ```
  
-### Step 3: Run the Container
+### Step 4: Run the Container
 ```
 docker run -d -p 8000:8000 --env-file .env fastapi-crud-app
  
 ```
-### 4. Open Browser
+### step 5: Open Browser
  
-Visit http://127.0.0.1:8000/docs to access the interactive Swagger UI.
+Visit http://127.0.0.1:8000/docs or  http://localhost:8000/docs to access the interactive Swagger UI.
+
+## Auth API Endpoints
+POST	/signup 	-Register a user
+POST	/login 	 -Login with password
  
-## 🗃️ Example API Endpoints
+## Book API Endpoints
 POST /books/ — Create a book
  
 GET /books/ — Get all books
