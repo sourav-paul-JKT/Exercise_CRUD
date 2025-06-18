@@ -2,6 +2,10 @@ fastapi==0.115.12
 uvicorn==0.34.3
 sqlalchemy==2.0.41
 pydantic==2.11.5
+<<<<<<< HEAD
 python-dotenv==1.1.0
 python-josh[cryptography]==3.5.0
 passlib[bcrypt]==1.7.4
+=======
+python-dotenv==1.1.0
+>>>>>>> 0ce56c595648b3f9068ffb0b045c60f3fa8e430a
