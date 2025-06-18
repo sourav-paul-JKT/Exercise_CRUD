@@ -14,3 +14,10 @@ class Book(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     author = Column(String, index=True)
+
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    password = Column(String)
+
