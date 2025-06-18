@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from middleware.auth import auth_router
+from database import get_db
 import models, schemas, crud
 from database import SessionLocal, engine
 
@@ -12,18 +13,6 @@ app = FastAPI()
 
 app.include_router(auth_router)
 
-def get_db():
-    """
-    Dependency function to get a SQLAlchemy database session.
-    Closes the session automatically after request is complete.
-    Yields:
-        Session: SQLAlchemy database session.
-    """
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @app.post("/books/", response_model=schemas.Book)
 def create_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
