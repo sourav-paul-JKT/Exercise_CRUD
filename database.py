@@ -38,3 +38,14 @@ Base class for ORM models.
 
 All SQLAlchemy models will inherit from this Base class to get the metadata and mapping functionality.
 """
+
+def get_db():
+    """
+    Yields a SQLAlchemy database session.
+    Automatically closes the session after request is complete.
+    """
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

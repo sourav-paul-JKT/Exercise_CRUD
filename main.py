@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
+from middleware.auth import auth_router
 import models, schemas, crud
 from database import SessionLocal, engine
 
@@ -8,6 +9,8 @@ models.Base.metadata.create_all(bind=engine)
 
 # Initialize FastAPI app
 app = FastAPI()
+
+app.include_router(auth_router)
 
 def get_db():
     """
