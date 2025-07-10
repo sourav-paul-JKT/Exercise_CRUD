@@ -1,21 +1,20 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
-from middleware.auth import auth_router
+from middleware.auth import auth_router, get_current_user
 from database import get_db
 import models, schemas, crud
 from database import SessionLocal, engine
+from models import User
 
-# Create database tables if they don't exist
 models.Base.metadata.create_all(bind=engine)
 
-# Initialize FastAPI app
 app = FastAPI()
 
 app.include_router(auth_router)
 
 
 @app.post("/books/", response_model=schemas.Book)
-def create_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
+def create_book(book: schemas.BookCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """
     API endpoint to create a new book.
     Args:
@@ -58,7 +57,7 @@ def read_book(book_id: int, db: Session = Depends(get_db)):
     return db_book
 
 @app.put("/books/{book_id}", response_model=schemas.Book)
-def update_book(book_id: int, book: schemas.BookCreate, db: Session = Depends(get_db)):
+def update_book(book_id: int, book: schemas.BookCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """
     API endpoint to update an existing book by ID.
     Args:
@@ -76,7 +75,7 @@ def update_book(book_id: int, book: schemas.BookCreate, db: Session = Depends(ge
     return db_book
  
 @app.delete("/books/{book_id}")
-def delete_book(book_id: int, db: Session = Depends(get_db)):
+def delete_book(book_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """
     API endpoint to delete a book by ID.
     Args:
