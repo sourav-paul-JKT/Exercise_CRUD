@@ -7,7 +7,7 @@ import os
 load_dotenv()
 
 # Get database URL from environment or fallback to default
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Create SQLAlchemy engine
 engine = create_engine(

@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 
 from models import User 
-from schemas import UserCreate, UserOut, UserLogin, Token
+from schemas import UserCreate, UserOut, UserLogin, Token, ChangePasswordRequest
 from database import get_db 
 
 # Load .env secrets
@@ -65,3 +65,24 @@ def login(user: UserLogin, db: Session = Depends(get_db)):
  
     access_token = create_access_token(data={"sub": db_user.username})
     return {"access_token": access_token, "token_type": "bearer"}
+
+@auth_router.put("/changepassword", response_model=Token)
+def changepassword(user: ChangePasswordRequest, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.username == user.username).first()
+    if not db_user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid username"
+        )
+    if not verify_password(user.old_password, db_user.password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect old password"
+        )
+    
+    db_user.password = get_password_hash(user.new_password)
+    db.commit()
+
+    access_token = create_access_token(data={"sub": db_user.username})
+    return {"access_token": access_token, "token_type": "bearer"}
+    
